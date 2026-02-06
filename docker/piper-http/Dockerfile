@@ -12,7 +12,7 @@ curl \
 && rm -rf /var/lib/apt/lists/*
 
 # Install piper and piper[http]
-RUN pip3 install --no-cache-dir piper-tts piper-tts[http] --break-system-packages
+RUN pip3 install --no-cache-dir piper-tts==1.3.0 piper-tts[http] --break-system-packages
 
 ARG VOICE_NAME=en_US-amy-medium
 # ARG HTTPS_PROXY

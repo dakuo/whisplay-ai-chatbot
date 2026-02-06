@@ -2,7 +2,7 @@ node_modules
 data
 knowledge
 tts_temp
-.env
+/.env
 emoji_svg
 NotoSansSC-Bold.ttf
 cloud-api/speech.mp3
