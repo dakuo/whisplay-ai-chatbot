@@ -15,7 +15,6 @@ else
     echo "Graphical interface is currently disabled."
 fi
 
-<<<<<<< HEAD
 # Get user info
 TARGET_USER=$(whoami)
 USER_HOME=$HOME
@@ -48,21 +47,6 @@ echo "----------------------------------------"
 # Create the service file
 echo "Creating systemd service file..."
 sudo tee /etc/systemd/system/chatbot.service > /dev/null <<EOF
-=======
-TARGET_USER="${SUDO_USER:-$USER}"
-TARGET_UID="$(id -u "$TARGET_USER")"
-TARGET_HOME="$(getent passwd "$TARGET_USER" | cut -d: -f6)"
-REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
-
-if [ -z "$TARGET_HOME" ]; then
-  echo "Failed to resolve home directory for user: $TARGET_USER"
-  exit 1
-fi
-
-echo "Setting up the chatbot service..."
-
-sudo bash -c "cat > /etc/systemd/system/chatbot.service <<EOF
->>>>>>> f3957ae (edited the startup.sh script)
 [Unit]
 Description=Chatbot Service
 After=network.target sound.target
@@ -74,7 +58,6 @@ User=$TARGET_USER
 Group=audio
 SupplementaryGroups=audio video gpio
 
-<<<<<<< HEAD
 # Use the dynamic Home Directory
 WorkingDirectory=$USER_HOME/whisplay-ai-chatbot
 ExecStart=/bin/bash $USER_HOME/whisplay-ai-chatbot/run_chatbot.sh
@@ -84,45 +67,23 @@ Environment=PATH=$NODE_FOLDER:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/
 Environment=HOME=$USER_HOME
 Environment=XDG_RUNTIME_DIR=/run/user/$TARGET_UID
 Environment=NODE_ENV=production
-=======
-WorkingDirectory=$REPO_DIR
-ExecStart=/bin/bash $REPO_DIR/run_chatbot.sh
-
-# Environment variables (ALSA / mpg123 are very important)
-Environment=PATH=/usr/local/bin:/usr/bin:/bin:$TARGET_HOME/.local/bin
-Environment=HOME=$TARGET_HOME
-Environment=XDG_RUNTIME_DIR=/run/user/$TARGET_UID
->>>>>>> f3957ae (edited the startup.sh script)
 
 # Audio permissions
 PrivateDevices=no
 
-<<<<<<< HEAD
 # Logs
 StandardOutput=append:$USER_HOME/whisplay-ai-chatbot/chatbot.log
 StandardError=append:$USER_HOME/whisplay-ai-chatbot/chatbot.log
-=======
-StandardOutput=append:$REPO_DIR/chatbot.log
-StandardError=append:$REPO_DIR/chatbot.log
->>>>>>> f3957ae (edited the startup.sh script)
 
 Restart=always
 RestartSec=2
 
 [Install]
 WantedBy=multi-user.target
-<<<<<<< HEAD
 EOF
 
 # start the service
 echo "Service file created. Reloading Systemd..."
-=======
-EOF"
-
-echo "Chatbot service file created."
-echo "Enabling and starting the chatbot service..."
-
->>>>>>> f3957ae (edited the startup.sh script)
 sudo systemctl daemon-reload
 sudo systemctl enable chatbot.service
 sudo systemctl restart chatbot.service
