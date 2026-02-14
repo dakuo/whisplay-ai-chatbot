@@ -1,6 +1,10 @@
 #!/bin/bash
 # Set working directory
-export NVM_DIR="/home/pi/.nvm"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+cd "$SCRIPT_DIR" || exit 1
+
+USER_HOME="${HOME:-$(getent passwd "$(whoami)" | cut -d: -f6)}"
+export NVM_DIR="$USER_HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
@@ -16,7 +20,6 @@ echo "Using sound card index: $card_index"
 echo "===== Start time: $(date) =====" 
 echo "Current user: $(whoami)" 
 echo "Working directory: $(pwd)" 
-working_dir=$(pwd)
 echo "PATH: $PATH" 
 echo "Python version: $(python3 --version)" 
 echo "Node version: $(node --version)"
@@ -24,7 +27,6 @@ sleep 5
 
 # Start the service
 echo "Starting Node.js application..."
-cd $working_dir
 
 get_env_value() {
   if grep -Eq "^[[:space:]]*$1[[:space:]]*=" .env; then

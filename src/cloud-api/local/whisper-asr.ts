@@ -3,7 +3,11 @@ import { spawn } from "child_process";
 import { ASRServer } from "../../type";
 import { asrDir } from "../../utils/dir";
 
-const modelSize = process.env.WHISPER_MODEL_SIZE_OR_PATH || process.env.WHISPER_MODEL_SIZE || "tiny";
+// CLI whisper only accepts model names (tiny/base/small/medium/large), not file paths
+const rawModel = process.env.WHISPER_MODEL_SIZE_OR_PATH || process.env.WHISPER_MODEL_SIZE || "tiny";
+const modelSize = rawModel.includes("/") || rawModel.endsWith(".pt")
+  ? rawModel.replace(/^.*\//, "").replace(/\.pt$/, "") || "tiny"
+  : rawModel;
 const language = process.env.WHISPER_LANGUAGE || "";
 const asrServer = (process.env.ASR_SERVER || "").toLowerCase() as ASRServer;
 
